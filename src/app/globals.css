@@ -1,0 +1,102 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Precision Architect: Primary === */
+  --color-primary: #0050d4;
+  --color-primary-dim: #0046bb;
+  --color-primary-container: #7b9cff;
+  --color-primary-fixed: #7b9cff;
+  --color-on-primary: #f1f2ff;
+  --color-on-primary-container: #001e5a;
+  --color-on-primary-fixed: #000000;
+  --color-on-primary-fixed-variant: #00266e;
+  --color-inverse-primary: #618bff;
+
+  /* === Secondary (Green / Success) === */
+  --color-secondary: #006947;
+  --color-secondary-container: #69f6b8;
+  --color-secondary-fixed: #69f6b8;
+  --color-secondary-fixed-dim: #58e7ab;
+  --color-on-secondary: #c8ffe0;
+  --color-on-secondary-container: #005a3c;
+  --color-on-secondary-fixed: #00452d;
+  --color-on-secondary-fixed-variant: #006544;
+
+  /* === Tertiary (Amber / Warning) === */
+  --color-tertiary: #815100;
+  --color-tertiary-container: #f8a010;
+  --color-tertiary-dim: #714600;
+  --color-tertiary-fixed: #f8a010;
+  --color-tertiary-fixed-dim: #e79400;
+  --color-on-tertiary: #fff0e3;
+  --color-on-tertiary-container: #4a2c00;
+  --color-on-tertiary-fixed: #2a1700;
+  --color-on-tertiary-fixed-variant: #563400;
+
+  /* === Error === */
+  --color-error: #b31b25;
+  --color-error-dim: #9f0519;
+  --color-error-container: #fb5151;
+  --color-on-error: #ffefee;
+  --color-on-error-container: #570008;
+
+  /* === Surface Hierarchy === */
+  --color-surface: #f5f7f9;
+  --color-surface-bright: #f5f7f9;
+  --color-surface-variant: #d9dde0;
+  --color-surface-tint: #0050d4;
+  --color-surface-container: #e5e9eb;
+  --color-surface-container-low: #eef1f3;
+  --color-surface-container-high: #dfe3e6;
+  --color-surface-container-highest: #d9dde0;
+  --color-surface-container-lowest: #ffffff;
+
+  /* === On-Surface === */
+  --color-on-surface: #2c2f31;
+  --color-on-surface-variant: #595c5e;
+  --color-on-background: #2c2f31;
+  --color-background: #f5f7f9;
+  --color-inverse-surface: #0b0f10;
+  --color-inverse-on-surface: #9a9d9f;
+
+  /* === Outline === */
+  --color-outline: #747779;
+  --color-outline-variant: #abadaf;
+
+  /* === Typography === */
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-label: "Inter", sans-serif;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: #f5f7f9;
+  color: #2c2f31;
+}
+
+h1,
+h2,
+h3,
+.font-headline {
+  font-family: "Manrope", sans-serif;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+  vertical-align: middle;
+}
+
+/* Glass effects */
+.glass-nav {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.glass-search {
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}

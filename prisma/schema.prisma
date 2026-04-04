@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum CustomerStatus {
+  REPEAT_BUYER
+  REFERRAL
+}
+
+enum PaymentStatus {
+  UNPAID
+  DEPOSIT_PAID
+  FULLY_PAID
+}
+
+enum CostType {
+  CONSUMABLES
+  MONTHLY_FIXED
+}
+
+model Customer {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String?
+  status      CustomerStatus?
+  createdAt   DateTime        @default(now())
+  orders      Order[]
+
+  @@index([name])
+}
+
+model Category {
+  id              Int             @id @default(autoincrement())
+  name            String          @unique
+  unitPrice       Decimal
+  directCost      Decimal         @default(0)
+  createdAt       DateTime        @default(now())
+  orderCategories OrderCategory[]
+}
+
+model Order {
+  id              Int           @id @default(autoincrement())
+  customerId      Int
+  customer        Customer      @relation(fields: [customerId], references: [id])
+  orderDate       DateTime
+  paymentStatus   PaymentStatus @default(UNPAID)
+  depositAmount   Decimal       @default(0)
+  folderPath      String?
+  createdAt       DateTime      @default(now())
+  orderCategories OrderCategory[]
+
+  @@index([orderDate])
+}
+
+model OrderCategory {
+  id            Int      @id @default(autoincrement())
+  orderId       Int
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  categoryId    Int
+  category      Category @relation(fields: [categoryId], references: [id])
+  priceSnapshot Decimal
+  quantity      Int      @default(1)
+  progress      String   @default("待开始")
+
+  @@unique([orderId, categoryId])
+}
+
+model Cost {
+  id        Int      @id @default(autoincrement())
+  costType  CostType
+  name      String
+  amount    Decimal
+  month     DateTime
+  imagePath String?
+  llmRaw    String?
+  confirmed Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([month])
+}
+
+model Setting {
+  key   String @id
+  value String
+}

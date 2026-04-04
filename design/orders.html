@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CRM Next - Orders List</title>
+<!-- Fonts: Manrope & Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#563400",
+                    "outline-variant": "#abadaf",
+                    "primary": "#0050d4",
+                    "secondary": "#006947",
+                    "on-background": "#2c2f31",
+                    "tertiary-fixed-dim": "#e79400",
+                    "tertiary-fixed": "#f8a010",
+                    "on-primary-container": "#001e5a",
+                    "background": "#f5f7f9",
+                    "surface-container": "#e5e9eb",
+                    "on-tertiary": "#fff0e3",
+                    "on-error-container": "#570008",
+                    "tertiary-container": "#f8a010",
+                    "surface-variant": "#d9dde0",
+                    "on-primary-fixed": "#000000",
+                    "surface": "#f5f7f9",
+                    "on-primary": "#f1f2ff",
+                    "error-dim": "#9f0519",
+                    "primary-fixed": "#7b9cff",
+                    "error": "#b31b25",
+                    "on-secondary-fixed-variant": "#006544",
+                    "inverse-on-surface": "#9a9d9f",
+                    "on-tertiary-container": "#4a2c00",
+                    "surface-bright": "#f5f7f9",
+                    "primary-container": "#7b9cff",
+                    "on-tertiary-fixed": "#2a1700",
+                    "surface-container-highest": "#d9dde0",
+                    "surface-container-low": "#eef1f3",
+                    "outline": "#747779",
+                    "tertiary-dim": "#714600",
+                    "on-surface-variant": "#595c5e",
+                    "inverse-surface": "#0b0f10",
+                    "on-secondary": "#c8ffe0",
+                    "on-error": "#ffefee",
+                    "surface-tint": "#0050d4",
+                    "error-container": "#fb5151",
+                    "secondary-container": "#69f6b8",
+                    "on-primary-fixed-variant": "#00266e",
+                    "secondary-fixed-dim": "#58e7ab",
+                    "inverse-primary": "#618bff",
+                    "primary-dim": "#0046bb",
+                    "secondary-fixed": "#69f6b8",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#dfe3e6",
+                    "on-surface": "#2c2f31",
+                    "tertiary": "#815100",
+                    "on-secondary-container": "#005a3c",
+                    "on-secondary-fixed": "#00452d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    
+        .search-glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px) saturate(180%);
+            -webkit-backdrop-filter: blur(12px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .dark .search-glass {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .console-glass {
+            background: rgba(11, 15, 16, 0.9);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface pb-24">
+<!-- TopNavBar -->
+<nav class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl shadow-sm dark:shadow-none docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center h-16 w-full px-6 max-w-screen-2xl mx-auto">
+<div class="flex items-center gap-10">
+<span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">CRM Next</span>
+<div class="flex items-center gap-6">
+<a class="text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 dark:border-blue-400 pb-1 font-inter text-sm transition-all active:scale-95" href="#">Orders</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-inter text-sm transition-all active:scale-95" href="#">Costs</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-inter text-sm transition-all active:scale-95" href="#">Analytics</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors font-inter text-sm transition-all active:scale-95" href="#">Settings</a>
+</div>
+</div>
+<div class="flex items-center gap-6 justify-end flex-1">
+<div class="relative w-full max-w-md group">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-slate-400 group-focus-within:text-blue-500 transition-colors text-xl">search</span>
+</div>
+<input class="block w-full pl-10 pr-4 py-2 search-glass rounded-xl text-sm font-medium focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/30 transition-all placeholder:text-slate-400 text-slate-700 dark:text-slate-200" placeholder="Search orders, clients, or analytics..." type="text"/>
+<div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+<span class="hidden md:block text-[10px] font-bold text-slate-400 border border-slate-300 dark:border-slate-700 rounded px-1.5 py-0.5">⌘ K</span>
+</div>
+</div>
+</div>
+</div>
+</nav>
+<main class="max-w-screen-2xl mx-auto px-6 py-8">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+<div>
+<nav class="flex mb-2 text-xs font-medium text-outline uppercase tracking-widest">
+<span>Dashboard</span>
+<span class="mx-2">/</span>
+<span class="text-primary">Operations</span>
+</nav>
+<h1 class="text-4xl font-extrabold tracking-tight text-on-background">Order List</h1>
+</div>
+<button class="bg-gradient-to-r from-primary to-primary-dim text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-primary/20 flex items-center gap-2 hover:translate-y-[-2px] active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+                New Order
+            </button>
+</div>
+<!-- Order Statistics -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+<p class="text-sm font-medium text-outline-variant mb-1">Total Orders</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">1,284</span>
+<span class="text-xs font-bold text-secondary flex items-center">+12% <span class="material-symbols-outlined text-xs">trending_up</span></span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10">
+<p class="text-sm font-medium text-outline-variant mb-1">Active Pipeline</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold">42</span>
+<span class="text-xs font-bold text-tertiary flex items-center">In Progress</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-outline-variant/10 md:col-span-2 relative overflow-hidden group">
+<div class="relative z-10">
+<p class="text-sm font-medium text-white/80 mb-1">Revenue Forecast</p>
+<span class="text-2xl font-bold text-white block mb-4">$142,500.00</span>
+<!-- Progress Bar -->
+<div class="w-full h-1.5 bg-white/20 rounded-full overflow-hidden mb-3">
+<div class="bg-white h-full rounded-full" style="width: 69%"></div>
+</div>
+<!-- Breakdown Labels -->
+<div class="flex justify-between items-end">
+<div class="flex flex-col gap-0.5">
+<span class="text-[10px] uppercase tracking-wider font-bold text-white/60">Collected</span>
+<span class="text-sm font-bold text-white">$98,250.00 <span class="text-[10px] font-medium opacity-80">(69%)</span></span>
+</div>
+<div class="flex flex-col gap-0.5 text-right">
+<span class="text-[10px] uppercase tracking-wider font-bold text-white/60">Remaining</span>
+<span class="text-sm font-bold text-white">$44,250.00 <span class="text-[10px] font-medium opacity-80">(31%)</span></span>
+</div>
+</div>
+</div>
+<div class="absolute right-0 top-0 h-full w-1/3 bg-primary/20 blur-3xl rounded-full"></div>
+<div class="absolute inset-0 bg-primary -z-0"></div>
+</div>
+</div>
+<!-- Data Table Container -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/10">
+<div class="p-4 flex items-center justify-between border-b border-surface-container">
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-surface-container-low rounded-lg px-3 py-1.5 border border-outline-variant/20">
+<span class="material-symbols-outlined text-sm text-outline">filter_list</span>
+<span class="text-sm font-medium ml-2">Filters</span>
+</div>
+<span class="text-sm text-outline-variant">Showing 4 of 1,284 results</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-outline">download</span></button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-colors"><span class="material-symbols-outlined text-outline">more_vert</span></button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Order ID</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Customer Name</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant">Total Price</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant text-right">Deposit</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant text-right">Remaining</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant text-center">Status</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant text-center">Progress</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container">
+<!-- Row 1 -->
+<tr class="hover:bg-primary/5 transition-colors group cursor-pointer border-l-4 border-transparent hover:border-primary">
+<td class="px-6 py-5 font-mono text-sm font-semibold text-primary">ORD-001</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">AS</div>
+<span class="text-sm font-semibold text-on-surface">Alex Sterling</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm font-bold">$12,450.00</td>
+<td class="px-6 py-5 text-sm text-right text-on-surface-variant">$4,000.00</td>
+<td class="px-6 py-5 text-sm text-right font-medium text-error">$8,450.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-tertiary-container text-on-tertiary-container">Deposit</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest text-on-surface-variant">To Do</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-white rounded-md text-outline hover:text-primary transition-all"><span class="material-symbols-outlined text-lg">receipt_long</span></button>
+<button class="p-1.5 hover:bg-white rounded-md text-outline hover:text-primary transition-all"><span class="material-symbols-outlined text-lg">folder_open</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2 (Selected state example) -->
+<tr class="bg-primary/10 transition-colors group cursor-pointer border-l-4 border-primary">
+<td class="px-6 py-5 font-mono text-sm font-semibold text-primary">ORD-002</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary font-bold text-xs">RM</div>
+<span class="text-sm font-semibold text-on-surface">Riley Montgomery</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm font-bold">$8,200.00</td>
+<td class="px-6 py-5 text-sm text-right text-on-surface-variant">$8,200.00</td>
+<td class="px-6 py-5 text-sm text-right font-medium text-secondary">$0.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-secondary-container text-on-secondary-container">Paid</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-container/30 text-primary">In Progress</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-1 opacity-100 transition-opacity">
+<button class="p-1.5 bg-white rounded-md text-primary shadow-sm"><span class="material-symbols-outlined text-lg">receipt_long</span></button>
+<button class="p-1.5 bg-white rounded-md text-primary shadow-sm"><span class="material-symbols-outlined text-lg">folder_open</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-primary/5 transition-colors group cursor-pointer border-l-4 border-transparent hover:border-primary">
+<td class="px-6 py-5 font-mono text-sm font-semibold text-primary">ORD-003</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-outline-variant/10 flex items-center justify-center text-outline font-bold text-xs">JD</div>
+<span class="text-sm font-semibold text-on-surface">Jordan Dax</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm font-bold">$1,450.00</td>
+<td class="px-6 py-5 text-sm text-right text-on-surface-variant">$0.00</td>
+<td class="px-6 py-5 text-sm text-right font-medium text-error">$1,450.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-error-container/20 text-error">Unpaid</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-surface-container-highest text-on-surface-variant">To Do</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-white rounded-md text-outline hover:text-primary transition-all"><span class="material-symbols-outlined text-lg">receipt_long</span></button>
+<button class="p-1.5 hover:bg-white rounded-md text-outline hover:text-primary transition-all"><span class="material-symbols-outlined text-lg">folder_open</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-primary/5 transition-colors group cursor-pointer border-l-4 border-transparent hover:border-primary">
+<td class="px-6 py-5 font-mono text-sm font-semibold text-primary">ORD-004</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">BK</div>
+<span class="text-sm font-semibold text-on-surface">Brooklynn Knight</span>
+</div>
+</td>
+<td class="px-6 py-5 text-sm font-bold">$22,000.00</td>
+<td class="px-6 py-5 text-sm text-right text-on-surface-variant">$11,000.00</td>
+<td class="px-6 py-5 text-sm text-right font-medium text-error">$11,000.00</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-tertiary-container text-on-tertiary-container">Deposit</span>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary-container/30 text-primary">In Progress</span>
+</td>
+<td class="px-6 py-5 text-right">
+<div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-1.5 hover:bg-white rounded-md text-outline hover:text-primary transition-all"><span class="material-symbols-outlined text-lg">receipt_long</span></button>
+<button class="p-1.5 hover:bg-white rounded-md text-outline hover:text-primary transition-all"><span class="material-symbols-outlined text-lg">folder_open</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 bg-surface-container-low/30 border-t border-surface-container flex items-center justify-between">
+<div class="flex items-center gap-4">
+<label class="text-xs font-bold text-outline uppercase tracking-wider">Rows per page:</label>
+<select class="bg-transparent border-none text-xs font-bold text-on-surface focus:ring-0 cursor-pointer">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-xs font-medium text-outline-variant">1-10 of 1,284</span>
+<div class="flex items-center gap-1">
+<button class="p-1 hover:bg-surface-container rounded-md disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="p-1 hover:bg-surface-container rounded-md text-primary">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- IS_HOST Local Control Console -->
+<footer class="fixed bottom-0 left-0 right-0 z-50 console-glass text-white px-6 py-3">
+<div class="max-w-screen-2xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+<!-- Left: Brand & Status -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_rgba(0,105,71,0.8)] animate-pulse"></div>
+<span class="text-xs font-bold tracking-widest uppercase headline">IS_HOST Console</span>
+</div>
+<div class="h-6 w-px bg-white/10 hidden md:block"></div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 text-white/60">
+<span class="material-symbols-outlined text-sm">sync</span>
+<span class="text-[10px] font-semibold uppercase tracking-tight">Sync Local Files: <span class="text-secondary">Connected</span></span>
+</div>
+</div>
+</div>
+<!-- Middle: Contextual Actions (Active state) -->
+<div class="flex-1 flex justify-center">
+<div class="bg-white/5 border border-white/10 rounded-lg px-4 py-1.5 flex items-center gap-4 transition-all">
+<span class="text-[10px] font-bold text-white/40 uppercase tracking-widest headline">Selected Order Actions</span>
+<div class="h-4 w-px bg-white/10"></div>
+<button class="flex items-center gap-2 px-3 py-1 bg-primary text-white rounded-md text-xs font-bold hover:bg-primary-dim transition-colors group">
+<span class="material-symbols-outlined text-sm transition-transform group-hover:scale-110">folder_open</span>
+                        Open Local Folder
+                        <span class="text-[8px] opacity-40 font-mono ml-1">folderPath</span>
+</button>
+</div>
+</div>
+<!-- Right: Global Commands -->
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1.5 border border-white/10 rounded-lg bg-white/5">
+<span class="text-[10px] font-bold text-white/40 uppercase tracking-widest headline">Global Host Commands</span>
+<button class="ml-2 flex items-center gap-2 text-xs font-bold text-white/90 hover:text-white transition-colors group">
+<span class="material-symbols-outlined text-sm text-tertiary">cloud_upload</span>
+                        Trigger System Backup
+                        <span class="text-[8px] opacity-40 font-mono">backupDir</span>
+</button>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
