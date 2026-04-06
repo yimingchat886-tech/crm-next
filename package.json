@@ -8,6 +8,8 @@
     "start": "next start"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.2",
+    "@prisma/adapter-libsql": "^7.6.0",
     "@prisma/client": "^7.6.0",
     "@tanstack/react-table": "^8.21.3",
     "next": "16.2.2",

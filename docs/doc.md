@@ -61,3 +61,84 @@ if (orders !== data && orders.length !== data.length) {
 - `crm-next/src/components/orders/OrdersTable.tsx`
 - `crm-next/src/components/costs/CostsClient.tsx`
 - `crm-next/package.json`
+
+---
+
+# Prisma 7 Driver Adapter 修复
+
+## 修复日期
+2026-04-06
+
+## 问题描述
+`npm run dev` 启动后所有 API 路由抛出 `PrismaClientInitializationError`：
+
+```
+PrismaClient needs to be constructed with a non-empty, valid PrismaClientOptions
+```
+
+## 根因
+Prisma 7.x 废弃了旧的 engine-based 初始化方式，`new PrismaClient()` 不再接受无参构造，必须通过 driver adapter 显式指定数据库驱动。
+
+## 修复
+安装 `@prisma/adapter-libsql` + `@libsql/client`，重写 `src/lib/prisma.ts`：
+
+```typescript
+import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { PrismaClient } from "@/generated/prisma";
+
+function createPrismaClient() {
+  const url = process.env.DATABASE_URL ?? "file:./prisma/crm.db";
+  const adapter = new PrismaLibSql({ url });
+  return new PrismaClient({ adapter });
+}
+
+export const prisma = globalForPrisma.prisma ?? createPrismaClient();
+```
+
+注：`PrismaLibSql` 直接接受 `{ url }` 配置对象，无需先 `createClient()`；LibSQL 原生支持 `file:` 相对路径，无需 `path.resolve`。
+
+## 相关文件
+- `crm-next/src/lib/prisma.ts`
+- `crm-next/package.json`
+
+---
+
+# 成本页架构重构：月级共享成本拆分
+
+## 重构日期
+2026-04-06
+
+## 背景
+`Cost` 表（CONSUMABLES / MONTHLY_FIXED）在 DB 层无 `orderId`，按月存储，属于当月所有订单的共享成本。但原 UI 入口为 `/costs/[orderId]`，造成"成本归属于某订单"的误解，与设计初衷相悖。
+
+## 重构内容
+
+### 路由变更
+
+| 路由 | 变更前 | 变更后 |
+|---|---|---|
+| `/costs` | NavBar 链接，指向不存在的路由（404） | RSC，重定向到 `/costs/month/YYYY-MM` |
+| `/costs/[orderId]` | Direct + Consumables + Monthly Fixed 三 Tab | 仅 Direct Tab（订单级直接成本） |
+| `/costs/month/[yearMonth]` | 不存在 | 新增：Consumables + Monthly Fixed 两 Tab |
+
+### 新增文件
+- `src/app/costs/page.tsx` — 重定向到当前月
+- `src/app/costs/month/[yearMonth]/page.tsx` — 月级成本 RSC，查询指定月份的 Cost 记录
+- `src/components/costs/MonthCostsClient.tsx` — 月级成本 Client 组件，含月份导航（左右箭头切换），POST 时 `month` 字段使用 URL 中的 `yearMonth`（不再硬编码 `new Date()`）
+
+### 修改文件
+- `src/components/costs/CostsClient.tsx` — 删除 ConsumablesTab / MonthlyFixedTab，简化为只渲染 Direct 成本表
+- `src/app/costs/[orderId]/page.tsx` — 删除 Cost / Setting 查询，只保留 Order 查询
+
+### NavBar
+原 `{ href: "/costs" }` 指向不存在路由导致 404，经重构后 `/costs` 页面已建立，链接恢复正常。
+
+## 分摊逻辑（不变）
+Analytics 页的利润计算按各订单应收总价占当月总额的比例分摊 Consumables + Monthly Fixed，数据来源不受此次重构影响。
+
+## 相关文件
+- `crm-next/src/app/costs/page.tsx`
+- `crm-next/src/app/costs/month/[yearMonth]/page.tsx`
+- `crm-next/src/app/costs/[orderId]/page.tsx`
+- `crm-next/src/components/costs/CostsClient.tsx`
+- `crm-next/src/components/costs/MonthCostsClient.tsx`
